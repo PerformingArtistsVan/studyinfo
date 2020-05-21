@@ -1,0 +1,30 @@
+问题1:spring-boot中请求经过怎么处理到控制层（了解参数注解在那一层被使用了，目的，使用自定义注解，利用AOP将值注入）
+解决：自定义类实现HandlerMethodArgumentResolver接口，并在springboot中注册，即可。
+伪代码如下
+setp 1:
+//自定义类，实现接口
+class myhadler implements HandlerMethodArgumentResolver{
+	@Override
+    public boolean supportsParameter(MethodParameter parameter) {
+		//判断是否需要修改参数， 返回boolean  如果是false， 不执行resolveArgument
+        return false;
+    }
+
+    @Override
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+		//通过判断后，将改参数赋值
+        return null;
+    }
+}
+
+
+setp 2:
+//自定义类实现 WebMvcConfigurer，并重写addArgumentResolvers
+public class InterceptorConfig  implements WebMvcConfigurer{
+	//将自定参数解析器加入 集合中
+	@Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new MyResolver());
+    }
+}
+ 
