@@ -27,4 +27,52 @@ public class InterceptorConfig  implements WebMvcConfigurer{
         resolvers.add(new MyResolver());
     }
 }
+问题2： 如何在工具类中使用spring注入的类？
+伪代码如下：
+
+ @Component //将工具类也注入spring容器中
+ public class MQFactory {
+     @Autowired
+     private MQSender mqSender;
+
+     //让工具类持有自己
+     private static MQFactory instance;
+
+     public MQFactory(){
+         super();
+         init();
+     }
+    //初始化方法调用init ，把对象放入 其中
+     private void init(){
+         instance = this;
+         instance.mqSender = this.mqSender;
+     }
+
+     public static MQSender getMQSender(){
+         return instance.mqSender;
+     }
+ }
+问题3：关于线程的一些概念，及使用方法
+线程的实现： 继承Thread重写run方法， new线程实现runnable接口，
+线程的状态
+        1：新建：创建好之后直到调用start方法
+        2：就绪：调用start之后进入就绪，等待CPU调度
+        3：运行：如果在就绪状态获取到CPU时间，就可执行run方法， 此时线程就进入运行状态，运行状态可变为阻塞，就绪和死亡状态
+        4：阻塞：如果一个线程执行了sleep，susend等方法，是去所占用资源后，该线程就进入阻塞状态， 当睡眠时间已到或者获得
+                 设备资源后可以重新进入就绪状态，可以分为三种
+           4.1:等待阻塞，运行线程中执行wait方法，使线程进入等待（释放锁）
+           4.2:同步阻塞，线程获取synchronize同步锁失败（因为同步锁被其他线程占用）
+           4.3:其他阻塞，通过调用线程的sleep或者join发出I/O请求时，线程就会进入阻塞状态，当sleep状态超时，join等待线程终结
+                或超时，或者IO处理完毕，线程重新转入就绪状态
+        5:死亡状态：一个线程状态的完成任务或者其他终止条件发生时，该线程就切换到终止状态
+线程的方法
+      1：sleep 使调用线程进入睡眠，不释放锁，进入阻塞状态，到时间后进入就绪状态
+      2：wait 使线程进入等待，结合synchronize使用， 直到notify 或者 interrupt
+      3：notify：通知
+问题4,: 基于线程只是创建一个可用的线程池
+      1：保证核心线程不被销毁
+      2：任务队列的可扩展性
+      3：空闲时自动删除部分线程
+
+
  
