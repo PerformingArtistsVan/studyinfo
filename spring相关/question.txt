@@ -78,6 +78,6 @@ public class InterceptorConfig  implements WebMvcConfigurer{
         JDK线程池（动态判断线程集合的数量，决定是用poll或者tak来进行阻塞）
       2：使用无界队列LICKBLOCKQUEUE
       3：使用poll方法返回空 ，让run执行完毕
-
+       补充， 线程池线程工作的模式， 无限循环 + 阻塞 + 判断为真跳出循环
 
  
