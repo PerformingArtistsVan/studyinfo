@@ -73,6 +73,11 @@ public class InterceptorConfig  implements WebMvcConfigurer{
       1：保证核心线程不被销毁
       2：任务队列的可扩展性
       3：空闲时自动删除部分线程
+      回答：
+      1：线程池工具类内创建自定义线程对象，持有Boolean类型的私有对象，用于判断是否属于核心线程
+        JDK线程池（动态判断线程集合的数量，决定是用poll或者tak来进行阻塞）
+      2：使用无界队列LICKBLOCKQUEUE
+      3：使用poll方法返回空 ，让run执行完毕
 
 
  
